@@ -1,7 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
-#include "NewHorizonsCharacter.h"
-#include "NewHorizonsProjectile.h"
+#include "Character/NewHorizonsCharacter.h"
+#include "Character/NewHorizonsProjectile.h"
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"

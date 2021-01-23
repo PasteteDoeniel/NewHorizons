@@ -2,7 +2,7 @@
 
 #include "NewHorizonsGameMode.h"
 #include "NewHorizonsHUD.h"
-#include "NewHorizonsCharacter.h"
+#include "Character/NewHorizonsCharacter.h"
 #include "UObject/ConstructorHelpers.h"
 
 ANewHorizonsGameMode::ANewHorizonsGameMode()
