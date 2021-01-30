@@ -4,17 +4,24 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+#include "AbilitySystemInterface.h"
 #include "NH_SpaceShip.generated.h"
 
+class UGameplayAbility;
+class UAbilitySystemComponent;
 class UFloatingPawnMovement;
 class UInputComponent;
 class USphereComponent;
 class UArrowComponent;
+class UNH_HardPointSlot;
 
 UCLASS(config = Game)
-class NEWHORIZONS_API ANH_SpaceShip : public APawn
+class NEWHORIZONS_API ANH_SpaceShip : public APawn, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
+
+	UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+
 
 	UPROPERTY(Category = Character, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	UFloatingPawnMovement* ShipMovementComponent;
@@ -22,8 +29,10 @@ class NEWHORIZONS_API ANH_SpaceShip : public APawn
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	USphereComponent* Sphere;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Abilities, meta = (AllowPrivateAccess = "true"))
+	UAbilitySystemComponent* ShipAbilitySystemComponent;
+
 public:
-	// Sets default values for this pawn's properties
 	ANH_SpaceShip();
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
@@ -36,16 +45,14 @@ public:
 	bool bFlightAssist = true;
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:	
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+//===============ShipMovement================================
 	float GetLinearThrust(FVector Direction);
 
 	void ThrustForward(float Value);
@@ -74,4 +81,26 @@ public:
 
 	UFUNCTION(BlueprintPure)
 	FVector GetThrusterAcceleration() const { return ThrusterAcceleration;	}
+
+//===========================================================
+
+	UFUNCTION()
+	void UnregisterHardpointAbility();
+
+	UFUNCTION()
+	void RegisterHardpointAbility(TSubclassOf<UGameplayAbility> GameplayAbility);
+
+	UFUNCTION()
+	void ShootPrimaryWeapons();
+
+	UFUNCTION()
+    void ShootSecondaryWeapons();
+
+protected:
+	UPROPERTY()
+	TArray<UNH_HardPointSlot*> HardPointSlots;
+
+public:
+	UFUNCTION(BlueprintPure, BlueprintCallable)
+	TArray<UNH_HardPointSlot*> GetHardPointSlots() const {return HardPointSlots; }
 };

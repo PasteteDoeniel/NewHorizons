@@ -43,3 +43,5 @@ Buils/Gate02_01/WindowsNoEditor/MyProject/Content/Paks/MyProject-WindowsNoEditor
 MyProject 4\.18/Build/WindowsNoEditor/FileOpenOrder/CookerOpenOrder\.log
 
 MyProject 4\.18/Build/WindowsNoEditor/FileOpenOrder/EditorOpenOrder\.log
+.idea/
+Plugins/Developer/RiderLink/

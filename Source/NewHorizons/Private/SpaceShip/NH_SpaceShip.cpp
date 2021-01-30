@@ -5,31 +5,36 @@
 #include "Components/InputComponent.h"
 #include "GameFramework/InputSettings.h"
 #include "Components/SphereComponent.h"
-#include "GameFramework/FloatingPawnMovement.h"
+#include "SpaceShip/NH_HardPoint.h"
 #include "Components/ArrowComponent.h"
-#include "Kismet/KismetMathLibrary.h"
-#include "Engine/World.h"
+#include "AbilitySystemComponent.h"
+#include "SpaceShip/NH_HardPointSlot.h"
 
 
-// Sets default values
+UAbilitySystemComponent* ANH_SpaceShip::GetAbilitySystemComponent() const
+{
+	return ShipAbilitySystemComponent;
+}
+
 ANH_SpaceShip::ANH_SpaceShip()
 {
- 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	Sphere = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere"));
 	RootComponent = Sphere;
 
-	ShipMovementComponent = CreateDefaultSubobject<UFloatingPawnMovement>("ShipMovementComponent");
+
+	ShipAbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("ShipAbilitySystemComponent"));
 }
 
-// Called when the game starts or when spawned
 void ANH_SpaceShip::BeginPlay()
 {
+	TArray<UNH_HardPointSlot> Components;
+	GetComponents<UNH_HardPointSlot>(HardPointSlots);
+	
 	Super::BeginPlay();
 }
 
-// Called every frame
 void ANH_SpaceShip::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -55,13 +60,13 @@ float ANH_SpaceShip::GetLinearThrust(FVector Direction)
 {
 	if (bFlightAssist)
 	{
-		float S;
-		float D;
-		float A;
-		S = FVector::DotProduct(Direction, Sphere->GetPhysicsLinearVelocity());
-		D = S < 0 ? 1.0f : -1.0f;
-		A = S == 0 ? 0.0f : D;
-		return A;
+		float VelocityDotProduct;
+		float OppositeThrust;
+		float LinearThrust;
+		VelocityDotProduct = FVector::DotProduct(Direction, Sphere->GetPhysicsLinearVelocity());
+		OppositeThrust = VelocityDotProduct < 0 ? 1.0f : -1.0f;
+		LinearThrust = VelocityDotProduct == 0 ? 0.0f : OppositeThrust;
+		return LinearThrust;
 	}
 	else
 	{
@@ -105,6 +110,32 @@ void ANH_SpaceShip::Thrust()
 	Sphere->SetPhysicsLinearVelocity(ThrusterAcceleration, true);
 
 	AngularAcceleration = PitchAcceleration + YawAcceleration + RollAcceleration;
-	Sphere->SetPhysicsAngularVelocity(AngularAcceleration, true);
+	Sphere->SetPhysicsAngularVelocityInDegrees(AngularAcceleration, true);
+}
+
+//===========================================================
+
+void ANH_SpaceShip::UnregisterHardpointAbility()
+{
+}
+
+void ANH_SpaceShip::RegisterHardpointAbility(TSubclassOf<UGameplayAbility> GameplayAbility)
+{
+}
+
+void ANH_SpaceShip::ShootPrimaryWeapons()
+{
+	for (auto& HardPointSlot : HardPointSlots)
+	{
+		if (ANH_HardPoint* HardPoint = HardPointSlot->GetHardPoint())
+		{
+			HardPoint->Shoot(GetAbilitySystemComponent());
+		}
+	}
+}
+
+void ANH_SpaceShip::ShootSecondaryWeapons()
+{
+	
 }
 
