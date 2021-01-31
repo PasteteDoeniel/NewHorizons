@@ -5,34 +5,37 @@
 #include "CoreMinimal.h"
 
 
-#include "AbilitySystemInterface.h"
-#include "Abilities/GameplayAbility.h"
-#include "GameFramework/Actor.h"
+#include "AbilitySystemComponent.h"
+#include "Components/SceneComponent.h"
 #include "NH_HardPoint.generated.h"
 
-class UAbilitySystemComponent;
-UCLASS()
-class NEWHORIZONS_API ANH_HardPoint : public AActor, public IAbilitySystemInterface
+
+class ANH_ShipWeapon;
+UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+class NEWHORIZONS_API UNH_HardPoint : public USceneComponent
 {
 	GENERATED_BODY()
-	
+
 public:	
-	// Sets default values for this actor's properties
-	ANH_HardPoint();
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Abilities, meta = (AllowPrivateAccess = "true"))
-	UAbilitySystemComponent* HardPointAbilitySystemComponent;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	TSubclassOf<UGameplayAbility> WeaponAbility;
-
-	virtual  UAbilitySystemComponent* GetAbilitySystemComponent() const override {return HardPointAbilitySystemComponent;};
-
-	UFUNCTION()
-	void Shoot();
+	// Sets default values for this component's properties
+	UNH_HardPoint();
 
 protected:
-	// Called when the game starts or when spawned
+	// Called when the game starts
 	virtual void BeginPlay() override;
 
+
+	UPROPERTY()
+	ANH_ShipWeapon* HardPoint;
+
+public:
+
+	UFUNCTION()
+	ANH_ShipWeapon* GetHardPoint() const { return HardPoint; }
+
+	UFUNCTION(BlueprintCallable)
+	void AddHardPoint(TSubclassOf<ANH_ShipWeapon> NewHardPoint);
+
+	UFUNCTION()
+	void RemoveHardPoint();
 };

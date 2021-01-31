@@ -13,7 +13,7 @@ class UFloatingPawnMovement;
 class UInputComponent;
 class USphereComponent;
 class UArrowComponent;
-class UNH_HardPointSlot;
+class UNH_HardPoint;
 
 UCLASS(config = Game)
 class NEWHORIZONS_API ANH_SpaceShip : public APawn, public IAbilitySystemInterface
@@ -97,9 +97,9 @@ public:
 
 protected:
 	UPROPERTY()
-	TArray<UNH_HardPointSlot*> HardPointSlots;
+	TArray<UNH_HardPoint*> HardPointSlots;
 
 public:
 	UFUNCTION(BlueprintPure, BlueprintCallable)
-	TArray<UNH_HardPointSlot*> GetHardPointSlots() const {return HardPointSlots; }
+	TArray<UNH_HardPoint*> GetHardPointSlots() const {return HardPointSlots; }
 };

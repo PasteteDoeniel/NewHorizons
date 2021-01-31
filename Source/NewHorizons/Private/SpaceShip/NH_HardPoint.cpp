@@ -3,25 +3,31 @@
 
 #include "SpaceShip/NH_HardPoint.h"
 
-#include "SpaceShip/NH_HardPointSlot.h"
+#include "Kismet/GameplayStatics.h"
+#include "SpaceShip/NH_ShipWeapon.h"
+#include "SpaceShip/NH_SpaceShip.h"
 
-ANH_HardPoint::ANH_HardPoint()
+UNH_HardPoint::UNH_HardPoint()
 {
-	PrimaryActorTick.bCanEverTick = false;
-
-	HardPointAbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("HardPointAbilitySystemComponent"));
+	PrimaryComponentTick.bCanEverTick = false;
 }
 
-void ANH_HardPoint::Shoot()
-{
-	HardPointAbilitySystemComponent->TryActivateAbilityByClass(WeaponAbility);
-}
 
-void ANH_HardPoint::BeginPlay()
+// Called when the game starts
+void UNH_HardPoint::BeginPlay()
 {
 	Super::BeginPlay();
-
-	HardPointAbilitySystemComponent->GiveAbility(WeaponAbility);	
 }
 
+void UNH_HardPoint::AddHardPoint(TSubclassOf<ANH_ShipWeapon> NewHardPoint)
+{
+	HardPoint = GetWorld()->SpawnActor<ANH_ShipWeapon>(NewHardPoint, GetComponentLocation(), GetComponentRotation(), FActorSpawnParameters());
+	HardPoint->AttachToComponent(this, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+}
 
+void UNH_HardPoint::RemoveHardPoint()
+{
+	HardPoint->DetachFromActor(FDetachmentTransformRules(EDetachmentRule::KeepWorld, true));
+	HardPoint->Destroy();
+	HardPoint = nullptr;
+}

@@ -5,10 +5,10 @@
 #include "Components/InputComponent.h"
 #include "GameFramework/InputSettings.h"
 #include "Components/SphereComponent.h"
-#include "SpaceShip/NH_HardPoint.h"
+#include "SpaceShip/NH_ShipWeapon.h"
 #include "Components/ArrowComponent.h"
 #include "AbilitySystemComponent.h"
-#include "SpaceShip/NH_HardPointSlot.h"
+#include "SpaceShip/NH_HardPoint.h"
 
 ANH_SpaceShip::ANH_SpaceShip()
 {
@@ -24,8 +24,8 @@ ANH_SpaceShip::ANH_SpaceShip()
 
 void ANH_SpaceShip::BeginPlay()
 {
-	TArray<UNH_HardPointSlot> Components;
-	GetComponents<UNH_HardPointSlot>(HardPointSlots);
+	TArray<UNH_HardPoint> Components;
+	GetComponents<UNH_HardPoint>(HardPointSlots);
 	
 	Super::BeginPlay();
 }
@@ -127,7 +127,7 @@ void ANH_SpaceShip::ShootPrimaryWeapons()
 {
 	for (auto& HardPointSlot : HardPointSlots)
 	{
-		if (ANH_HardPoint* HardPoint = HardPointSlot->GetHardPoint())
+		if (ANH_ShipWeapon* HardPoint = HardPointSlot->GetHardPoint())
 		{
 			HardPoint->Shoot();
 		}
