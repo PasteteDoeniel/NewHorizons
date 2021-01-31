@@ -64,10 +64,7 @@ float ANH_SpaceShip::GetLinearThrust(FVector Direction)
 		LinearThrust = VelocityDotProduct == 0 ? 0.0f : OppositeThrust;
 		return LinearThrust;
 	}
-	else
-	{
-		return 0.0f;
-	}
+	return 0.0f;
 }
 
 void ANH_SpaceShip::ThrustForward(float Value)
