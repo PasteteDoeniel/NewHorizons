@@ -5,10 +5,10 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
 #include "AbilitySystemInterface.h"
+
 #include "NH_SpaceShip.generated.h"
 
 class UGameplayAbility;
-class UAbilitySystemComponent;
 class UFloatingPawnMovement;
 class UInputComponent;
 class USphereComponent;
@@ -20,8 +20,7 @@ class NEWHORIZONS_API ANH_SpaceShip : public APawn, public IAbilitySystemInterfa
 {
 	GENERATED_BODY()
 
-	UAbilitySystemComponent* GetAbilitySystemComponent() const override;
-
+	virtual  UAbilitySystemComponent* GetAbilitySystemComponent() const override {return ShipAbilitySystemComponent;}
 
 	UPROPERTY(Category = Character, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	UFloatingPawnMovement* ShipMovementComponent;

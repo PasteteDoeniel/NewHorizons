@@ -23,9 +23,11 @@ void UNH_HardPointSlot::AddHardPoint(TSubclassOf<ANH_HardPoint> NewHardPoint)
 {
 	HardPoint = GetWorld()->SpawnActor<ANH_HardPoint>(NewHardPoint, GetComponentLocation(), GetComponentRotation(), FActorSpawnParameters());
 	HardPoint->AttachToComponent(this, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
-	Cast<ANH_SpaceShip>(GetOwner())->RegisterHardpointAbility(HardPoint->WeaponAbility);
 }
 
 void UNH_HardPointSlot::RemoveHardPoint()
 {
+	HardPoint->DetachFromActor(FDetachmentTransformRules(EDetachmentRule::KeepWorld, true));
+	HardPoint->Destroy();
+	HardPoint = nullptr;
 }

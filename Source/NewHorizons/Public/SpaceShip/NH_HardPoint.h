@@ -4,13 +4,15 @@
 
 #include "CoreMinimal.h"
 
+
+#include "AbilitySystemInterface.h"
 #include "Abilities/GameplayAbility.h"
 #include "GameFramework/Actor.h"
 #include "NH_HardPoint.generated.h"
 
 class UAbilitySystemComponent;
 UCLASS()
-class NEWHORIZONS_API ANH_HardPoint : public AActor
+class NEWHORIZONS_API ANH_HardPoint : public AActor, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 	
@@ -18,11 +20,16 @@ public:
 	// Sets default values for this actor's properties
 	ANH_HardPoint();
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Abilities, meta = (AllowPrivateAccess = "true"))
+	UAbilitySystemComponent* HardPointAbilitySystemComponent;
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TSubclassOf<UGameplayAbility> WeaponAbility;
 
+	virtual  UAbilitySystemComponent* GetAbilitySystemComponent() const override {return HardPointAbilitySystemComponent;};
+
 	UFUNCTION()
-	void Shoot(UAbilitySystemComponent* AbilitySystemComponent);
+	void Shoot();
 
 protected:
 	// Called when the game starts or when spawned

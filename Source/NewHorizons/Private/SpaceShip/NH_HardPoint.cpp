@@ -9,17 +9,19 @@ ANH_HardPoint::ANH_HardPoint()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
+	HardPointAbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("HardPointAbilitySystemComponent"));
 }
 
-void ANH_HardPoint::Shoot(UAbilitySystemComponent* AbilitySystemComponent)
+void ANH_HardPoint::Shoot()
 {
-	AbilitySystemComponent->TryActivateAbilityByClass(WeaponAbility);
+	HardPointAbilitySystemComponent->TryActivateAbilityByClass(WeaponAbility);
 }
 
 void ANH_HardPoint::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	HardPointAbilitySystemComponent->GiveAbility(WeaponAbility);	
 }
 
 
