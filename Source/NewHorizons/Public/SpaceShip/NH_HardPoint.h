@@ -3,9 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-
-
-#include "AbilitySystemComponent.h"
 #include "Components/SceneComponent.h"
 #include "NH_HardPoint.generated.h"
 
@@ -17,13 +14,10 @@ class NEWHORIZONS_API UNH_HardPoint : public USceneComponent
 	GENERATED_BODY()
 
 public:	
-	// Sets default values for this component's properties
 	UNH_HardPoint();
 
 protected:
-	// Called when the game starts
 	virtual void BeginPlay() override;
-
 
 	UPROPERTY()
 	ANH_ShipWeapon* HardPoint;

@@ -84,16 +84,7 @@ public:
 //===========================================================
 
 	UFUNCTION()
-	void UnregisterHardpointAbility();
-
-	UFUNCTION()
-	void RegisterHardpointAbility(TSubclassOf<UGameplayAbility> GameplayAbility);
-
-	UFUNCTION()
-	void ShootPrimaryWeapons();
-
-	UFUNCTION()
-    void ShootSecondaryWeapons();
+	void ShootWeapons();
 
 protected:
 	UPROPERTY()

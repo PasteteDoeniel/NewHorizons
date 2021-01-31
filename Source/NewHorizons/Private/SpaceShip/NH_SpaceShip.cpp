@@ -24,7 +24,6 @@ ANH_SpaceShip::ANH_SpaceShip()
 
 void ANH_SpaceShip::BeginPlay()
 {
-	TArray<UNH_HardPoint> Components;
 	GetComponents<UNH_HardPoint>(HardPointSlots);
 	
 	Super::BeginPlay();
@@ -49,7 +48,7 @@ void ANH_SpaceShip::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	PlayerInputComponent->BindAxis("LookUp", this, &ANH_SpaceShip::Pitch);
 	PlayerInputComponent->BindAxis("Roll", this, &ANH_SpaceShip::Roll);
 
-	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ANH_SpaceShip::ShootPrimaryWeapons);
+	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ANH_SpaceShip::ShootWeapons);
 }
 
 float ANH_SpaceShip::GetLinearThrust(FVector Direction)
@@ -108,19 +107,7 @@ void ANH_SpaceShip::Thrust()
 
 //===========================================================
 
-void ANH_SpaceShip::UnregisterHardpointAbility()
-{
-}
-
-void ANH_SpaceShip::RegisterHardpointAbility(TSubclassOf<UGameplayAbility> GameplayAbility)
-{
-	if (HasAuthority())
-	{
-		ShipAbilitySystemComponent->GiveAbility(GameplayAbility);
-	}
-}
-
-void ANH_SpaceShip::ShootPrimaryWeapons()
+void ANH_SpaceShip::ShootWeapons()
 {
 	for (auto& HardPointSlot : HardPointSlots)
 	{
@@ -129,10 +116,5 @@ void ANH_SpaceShip::ShootPrimaryWeapons()
 			HardPoint->Shoot();
 		}
 	}
-}
-
-void ANH_SpaceShip::ShootSecondaryWeapons()
-{
-	
 }
 

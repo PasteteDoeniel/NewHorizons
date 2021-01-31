@@ -2,8 +2,7 @@
 
 
 #include "SpaceShip/NH_ShipWeapon.h"
-
-#include "SpaceShip/NH_HardPoint.h"
+#include "AbilitySystemComponent.h"
 
 ANH_ShipWeapon::ANH_ShipWeapon()
 {

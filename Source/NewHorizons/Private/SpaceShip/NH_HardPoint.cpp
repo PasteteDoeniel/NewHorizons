@@ -5,7 +5,6 @@
 
 #include "Kismet/GameplayStatics.h"
 #include "SpaceShip/NH_ShipWeapon.h"
-#include "SpaceShip/NH_SpaceShip.h"
 
 UNH_HardPoint::UNH_HardPoint()
 {
@@ -13,7 +12,6 @@ UNH_HardPoint::UNH_HardPoint()
 }
 
 
-// Called when the game starts
 void UNH_HardPoint::BeginPlay()
 {
 	Super::BeginPlay();

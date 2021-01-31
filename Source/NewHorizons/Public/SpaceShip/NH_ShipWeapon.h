@@ -3,8 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-
-
 #include "AbilitySystemInterface.h"
 #include "Abilities/GameplayAbility.h"
 #include "GameFramework/Actor.h"
