@@ -4,17 +4,23 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+#include "AbilitySystemInterface.h"
+
 #include "NH_SpaceShip.generated.h"
 
+class UGameplayAbility;
 class UFloatingPawnMovement;
 class UInputComponent;
 class USphereComponent;
 class UArrowComponent;
+class UNH_HardPoint;
 
 UCLASS(config = Game)
-class NEWHORIZONS_API ANH_SpaceShip : public APawn
+class NEWHORIZONS_API ANH_SpaceShip : public APawn, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
+
+	virtual  UAbilitySystemComponent* GetAbilitySystemComponent() const override {return ShipAbilitySystemComponent;}
 
 	UPROPERTY(Category = Character, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	UFloatingPawnMovement* ShipMovementComponent;
@@ -22,8 +28,10 @@ class NEWHORIZONS_API ANH_SpaceShip : public APawn
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	USphereComponent* Sphere;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Abilities, meta = (AllowPrivateAccess = "true"))
+	UAbilitySystemComponent* ShipAbilitySystemComponent;
+
 public:
-	// Sets default values for this pawn's properties
 	ANH_SpaceShip();
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
@@ -36,16 +44,14 @@ public:
 	bool bFlightAssist = true;
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:	
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+//===============ShipMovement================================
 	float GetLinearThrust(FVector Direction);
 
 	void ThrustForward(float Value);
@@ -74,4 +80,17 @@ public:
 
 	UFUNCTION(BlueprintPure)
 	FVector GetThrusterAcceleration() const { return ThrusterAcceleration;	}
+
+//===========================================================
+
+	UFUNCTION()
+	void ShootWeapons();
+
+protected:
+	UPROPERTY()
+	TArray<UNH_HardPoint*> HardPointSlots;
+
+public:
+	UFUNCTION(BlueprintPure, BlueprintCallable)
+	TArray<UNH_HardPoint*> GetHardPointSlots() const {return HardPointSlots; }
 };
